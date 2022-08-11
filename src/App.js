@@ -5,11 +5,15 @@ import Main from './components/Main';
 import Footer from './components/Footer';
 
 function App() {
+  const [darkTheme, setDarkTheme] = useState(false);
+
   return (
-    <div className="App">
-      <Navbar />
-      <Main />
-      <Footer />
+    <div className={darkTheme ? 'dark' : null}>
+      <div className="bg-gray-200 dark:bg-gray-900 dark:text-white">
+        <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
+        <Main />
+        <Footer />
+      </div>
     </div>
   );
 }
