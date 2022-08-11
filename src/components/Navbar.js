@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Navbar({ darkTheme, setDarkTheme }){
     return(
-        <header className="p-5 flex flex-wrap justify-center items-center border-b sm:justify-between dark:border-gray-700 border-gray-200">
+        <header className="p-5 flex flex-wrap justify-center items-center border-b-2 sm:justify-between dark:border-gray-700 border-gray-200">
             <nav className="w-full">
                 <ul className="flex justify-between w-100">
                     <li>
