@@ -1,23 +1,34 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useProductContext } from '../context/ProductContextProvider';
+
+import Home from '../pages/Home';
+import Cart from '../pages/Cart';
+import SingleProduct from '../pages/SingleProduct';
 import Error from '../pages/Error';
+import Loading from './Loading';
 
 export default function Main() {
-    const { getData, data, searchTerm, setSearchTerm, isLoading, error } = useProductContext();
+    const { getData, isLoading, error } = useProductContext();
 
+    //Might have to change this
     useEffect(() => {
         getData();
     }, []);
 
-    console.log(data);
+    if (isLoading) {
+        return (
+            <Loading />
+        )
+    }
 
     return (
-        <main className="p-4">
+        <main className="p-5">
             <Routes>
-                {error && (<Route path="/" element={<Error />}/>)}
-                <Route path="/" element={<h1>hello</h1>}/>
-                {/* <Route path='product/:id' element={<SingleProduct />} /> */}
+                {error && (<Route path="/error" element={<Error />}/>)}
+                <Route path="/" element={<Home />} />
+                <Route path="/product/:id" element={<SingleProduct />} />
+                <Route path="/cart" element={<Cart />} />
             </Routes>
         </main>
     )

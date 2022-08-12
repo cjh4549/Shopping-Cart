@@ -7,7 +7,7 @@ export default function ProductContextProvider({ children }){
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('vodka');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const getData = async () => {
         setIsLoading(true);
