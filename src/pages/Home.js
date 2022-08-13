@@ -1,7 +1,11 @@
-export default function(){
+import SearchForm from '../components/SearchForm';
+import ProductList from '../components/ProductList';
+
+export default function Home(){
     return(
-        <section>
-            Products
-        </section>
+        <main>
+            <SearchForm />
+            <ProductList />
+        </main>
     )
 }
