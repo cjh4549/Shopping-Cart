@@ -1,7 +1,7 @@
 import { useProductContext } from '../context/ProductContextProvider';
 
 export default function SearchForm(){
-    const { setSearchTerm, setCategories, categories } = useProductContext();
+    const { setSearchTerm, searchTerm, setCategories, categories } = useProductContext();
 
     const types = [
         {id: 1, name: 'all'},
@@ -13,15 +13,22 @@ export default function SearchForm(){
 
     return(
         <form>
-            <label>
+            <label htmlFor="search">
                 Search:
-                <input className="dark:text-black"/>
+                <input 
+                    className="dark:text-black"
+                    id="search"
+                    name="search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
             </label>
             <label htmlFor="categories">
                 Categories:
                 <select
                     className="dark:text-black"
                     id="categories"
+                    name="category"
                     value={categories}
                     onChange={(e) => {setCategories(e.target.value)}}
                 >

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Loading from './Loading';
 
 export default function ProductList(){
-    const { isLoading, data } = useProductContext();
+    const { isLoading, data, searchTerm } = useProductContext();
 
     if (isLoading) {
         return <Loading />
@@ -19,9 +19,11 @@ export default function ProductList(){
             <section>
                 <h2>Products</h2>
                 <div>
-                    {data.map(({ id, title, image, rating:{ rate }, price }) => (
-                        <Link to={`/product/${id}`}>
-                            <article key={id}>
+                    {data
+                        ?.filter(({ title }) => title.toLowerCase().split(' ').join('').includes(searchTerm.toLowerCase().split(' ').join('')))
+                        .map(({ id, title, image, rating:{ rate }, price }) => (
+                        <Link to={`/product/${id}`} key={id}>
+                            <article>
                                 <img src={image} alt={title} />
                                 <div>
                                     <h4>{title}</h4>

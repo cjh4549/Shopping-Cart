@@ -47,8 +47,6 @@ export default function ProductContextProvider({ children }){
         getData();
     }, [searchTerm, categories]);
 
-    console.log(data);
-
     return (
         <ProductContext.Provider value={{ getData, data, searchTerm, setSearchTerm, isLoading, error, setCategories, categories }}>
             {children}
