@@ -1,14 +1,15 @@
 import { useState, useEffect, createContext, useContext } from "react";
 
 const ProductContext = createContext();
-const baseUrl = "https://fakestoreapi.com/products"; //Getting all the products at once
 
 export default function ProductContextProvider({ children }){
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [categories, setCategories] = useState('');
+    const [categories, setCategories] = useState('all');
+
+    const baseUrl = "https://fakestoreapi.com/products";
 
     const getData = async () => {
         setIsLoading(true);
@@ -48,7 +49,7 @@ export default function ProductContextProvider({ children }){
     }, [searchTerm, categories]);
 
     return (
-        <ProductContext.Provider value={{ getData, data, searchTerm, setSearchTerm, isLoading, error, setCategories, categories }}>
+        <ProductContext.Provider value={{ baseUrl, getData, data, searchTerm, setIsLoading, setSearchTerm, isLoading, error, setError, setCategories, categories }}>
             {children}
         </ProductContext.Provider>
     )
