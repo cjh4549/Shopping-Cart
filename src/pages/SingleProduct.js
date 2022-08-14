@@ -5,9 +5,10 @@ import { useProductContext } from '../context/ProductContextProvider';
 
 export default function SingleProduct(){
     const { id } = useParams();
-    const { setIsLoading, isLoading, baseUrl, setError, setCategories } = useProductContext();
+    const { setIsLoading, isLoading, baseUrl, setError, setCategories, addItem } = useProductContext();
     const [singleData, setSingleData] = useState([]);
 
+    //Maybe useReducer to give a type to different API calls 
     useEffect(() => {
         setIsLoading(true);
 
@@ -32,7 +33,7 @@ export default function SingleProduct(){
 
         getSingleProductData();
         setCategories('');
-    }, [id])
+    }, [id]);
     
     const { description, image, price, title} = singleData;
 
@@ -50,7 +51,7 @@ export default function SingleProduct(){
                         <h3>{title}</h3>
                         <p>{description}</p>
                         <p>${price}</p>
-                        <button>Add +</button>
+                        <button onClick={() => addItem(singleData)}>Add +</button>
                     </div>                    
                 </article>
             </section>

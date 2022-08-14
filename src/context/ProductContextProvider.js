@@ -1,6 +1,13 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext, useReducer } from "react";
+import reducer from './reducer';
 
 const ProductContext = createContext();
+
+const initialState = {
+    total: 0,
+    amount: 0,
+    cart: []
+}
 
 export default function ProductContextProvider({ children }){
     const [data, setData] = useState([]);
@@ -8,6 +15,21 @@ export default function ProductContextProvider({ children }){
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories] = useState('all');
+
+    //useReducer
+    
+    const [state, dispatch] = useReducer(reducer, initialState); 
+
+    const addItem = (singleProduct) => {
+        dispatch({ type: "ADD", payload: singleProduct });
+        console.log(state)
+    }
+
+    const clearItem = () => {
+        dispatch({ type:"CLEAR" });
+    }
+
+    //
 
     const baseUrl = "https://fakestoreapi.com/products";
 
@@ -49,7 +71,23 @@ export default function ProductContextProvider({ children }){
     }, [searchTerm, categories]);
 
     return (
-        <ProductContext.Provider value={{ baseUrl, getData, data, searchTerm, setIsLoading, setSearchTerm, isLoading, error, setError, setCategories, categories }}>
+        <ProductContext.Provider 
+            value={{ 
+                state, 
+                clearItem, 
+                addItem, 
+                baseUrl, 
+                getData, 
+                data, 
+                searchTerm, 
+                setIsLoading, 
+                setSearchTerm, 
+                isLoading, 
+                error, 
+                setError, 
+                setCategories, 
+                categories 
+        }}>
             {children}
         </ProductContext.Provider>
     )
