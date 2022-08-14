@@ -5,8 +5,8 @@ import { useProductContext } from '../context/ProductContextProvider';
 
 export default function SingleProduct(){
     const { id } = useParams();
-    const [singleData, setSingleData] = useState([]);
     const { setIsLoading, isLoading, baseUrl, setError, setCategories } = useProductContext();
+    const [singleData, setSingleData] = useState([]);
 
     useEffect(() => {
         setIsLoading(true);
