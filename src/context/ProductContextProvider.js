@@ -1,6 +1,15 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
 const ProductContext = createContext(); 
+
+const getLocalStorage = () => {
+    let cartItems = localStorage.getItem('cartItems');
+    if(cartItems) {
+        return JSON.parse(cartItems);
+    } else {
+        return [];
+    }
+}
 
 export default function ProductContextProvider({ children }){
     const [data, setData] = useState([]);
@@ -9,7 +18,12 @@ export default function ProductContextProvider({ children }){
     const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories] = useState('all');
     const [singleProductData, setSingleProductData] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(getLocalStorage());
+
+    //local storage
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems))
+    }, [cartItems])
 
     const checkQuantity = (id) => {
         return cartItems.find(item => item.id === id)?.quantity || 0;

@@ -19,16 +19,16 @@ export default function ProductList(){
     } else {
         return(
             <section>
-                <h2 className="text-center my-10 text-xl font-bold">Products</h2>
+                <h2 className="text-center my-14 text-2xl font-bold sm:text-left">Products</h2>
                 <div>
                     {data
                         ?.filter(({ title }) => title.toLowerCase().split(' ').join('').includes(searchTerm.toLowerCase().split(' ').join('')))
                         .map(({ id, title, image, rating:{ rate }, price }) => (
                         <Link to={`/product/${id}`} key={id}>
-                            <article>
-                                <img className="w-24 h-24 rounded" src={image} alt={title} />
-                                <div>
-                                    <h4>{title}</h4>
+                            <article className="flex w-1/2 mx-auto mb-8 sm:flex-col sm:w-full">
+                                <img className="w-24 object-cover" src={image} alt={title} />
+                                <div className="ml-24 flex flex-col justify-center sm:m-0">
+                                    <h3 className="text-xl sm:text-base">{title}</h3>
                                     <p>Rating: {rate}/5</p>
                                     <p>${price}</p>
                                 </div>

@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 import { Routes, Route } from 'react-router-dom';
-import { useProductContext } from './context/ProductContextProvider';
 
 import Main from './pages/Main';
 import Cart from './pages/Cart';
@@ -15,7 +14,7 @@ function App() {
 
   return (
     <div className={darkTheme ? 'dark' : null}>
-      <div className="bg-gray-200 dark:bg-gray-900 dark:text-white overflow-hidden">
+      <div className="bg-gray-200 min-h-screen flex flex-col justify-between dark:bg-gray-900 dark:text-white">
         <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme} />
         <Routes className="p-5">
             <Route path="/" element={<Main />} />
