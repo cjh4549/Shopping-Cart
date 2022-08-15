@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { useProductContext } from '../context/ProductContextProvider';
 
 export default function Navbar({ darkTheme, setDarkTheme }){
-    const { state } = useProductContext();
+    const { checkQuantity, cartItems } = useProductContext();
+
+    console.log(cartItems)
 
     return(
         <header className="px-10 py-5 flex flex-wrap justify-center items-center border-b-2 sm:justify-between dark:border-gray-700 border-gray-200">
@@ -24,7 +26,9 @@ export default function Navbar({ darkTheme, setDarkTheme }){
                         <li>
                             <Link to="/cart" className="flex items-center">
                                 <span className="rounded-lg text-xl font-bold text-black hover:shadow-lg py-1 px-2 dark:text-gray-300">
-                                    Cart({})
+                                    Cart({cartItems.reduce((acc, item) => {
+                                        return acc = acc + item.quantity;
+                                    }, 0)})
                                 </span>
                             </Link>
                         </li>

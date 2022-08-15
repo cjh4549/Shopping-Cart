@@ -6,22 +6,22 @@ import { useProductContext } from '../context/ProductContextProvider';
 
 export default function SingleProduct(){
     const { id } = useParams();
-    const { isLoading, error, singleData, getSingleProductData, addItem, state } = useProductContext();
+    const { isLoading, error, singleProductData, getSingleProductData, increaseQuantity, checkQuantity } = useProductContext();
 
     useEffect(() => {
         getSingleProductData(id)
     }, [id]);
-
-    console.log(state);  
     
-    const { description, image, price, title } = singleData;
+    const { description, image, price, title } = singleProductData;
+
+    const quantity = checkQuantity(id);
+
+    console.log(quantity);
 
     if (isLoading) {
         return <Loading />
     } else if (error) {
-        return (
-            <Error />
-        )
+        return <Error />
     } else {
         return(
             <section className="px-10">
@@ -34,7 +34,7 @@ export default function SingleProduct(){
                         <h3>{title}</h3>
                         <p>{description}</p>
                         <p>${price}</p>
-                        <button onClick={() => addItem(id)}>Add +</button>
+                        <button onClick={() => increaseQuantity(id)}>Add Item +</button>
                     </div>                    
                 </article>
             </section>

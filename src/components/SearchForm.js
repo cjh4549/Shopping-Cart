@@ -1,7 +1,7 @@
 import { useProductContext } from '../context/ProductContextProvider';
 
 export default function SearchForm(){
-    const { setSearchTerm, searchTerm, setCategories, categories } = useProductContext();
+    const { searchTerm, setSearchTerm, categories, setCategories } = useProductContext();
 
     const types = [
         {id: 1, name: 'all'},
@@ -10,6 +10,11 @@ export default function SearchForm(){
         {id: 4, name: "men's clothing"},
         {id: 5, name: "women's clothing"}
     ];
+
+    const handleOptionChange = (e) => {
+        setCategories(e.target.value);
+        setSearchTerm("");
+    }
 
     return(
         <form>
@@ -30,9 +35,8 @@ export default function SearchForm(){
                     id="categories"
                     name="category"
                     value={categories}
-                    onChange={(e) => {setCategories(e.target.value)}}
+                    onChange={handleOptionChange}
                 >
-                    {/* <option /> */}
                     {types.map(({ id, name }) => (
                         <option className="dark:text-black" key={id} value={name}>
                             {name}

@@ -1,5 +1,4 @@
-import { useState, useEffect, createContext, useContext, useReducer } from "react";
-import reducer from './reducer';
+import { useState, createContext, useContext } from "react";
 
 const ProductContext = createContext(); 
 
@@ -9,40 +8,60 @@ export default function ProductContextProvider({ children }){
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories] = useState('all');
-    const [singleData, setSingleData] = useState([]);
+    const [singleProductData, setSingleProductData] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
 
-    //useReducer/////////////////////////////////////////////
-    
-    const [state, dispatch] = useReducer(reducer, {
-        total: 0,
-        quantity: 0,
-        cart: [data]
-    }); 
-
-    const addCart = (data) => {
-        dispatch({ type: "ADD_CART", payload: data })
+    const checkQuantity = (id) => {
+        return cartItems.find(item => item.id === id)?.quantity || 0;
     }
 
-    const addItem = (singleData, id) => {
-        dispatch({ type: "ADD_ITEM", payload: id});
+    const increaseQuantity = (id) => {
+        setCartItems(items => {
+            //if the item is not in the list, add one --> adding the first item to the cart
+            if (items.find(item => item.id === id) == null) {
+                return [...items, {id, quantity: 1}]
+            } else {
+            //adding more items to the cart; map through each item in the list and only increment the one that matches with the id
+                return items.map(item => {
+                    if (item.id === id) {
+                        return {...item, quantity: item.quantity + 1}
+                    } else {
+                        return item // because you don't want to do anything else to other item that doesn't match with the id
+                    }
+                })
+            }
+        })
     }
 
-    const removeItem = (id) => {
-        dispatch({ type: "REMOVE_ITEM", payload: id });
+    const decreaseQuantity = (id) => {
+        setCartItems(items => {
+            if (items.find(item => item.id === id)?.quantity === 1) {
+                return items.filter(item => item.id !== id)
+            } else {
+                return items.map(item => {
+                    if (item.id === id) {
+                        return {...item, quantity: item.quantity - 1}
+                    } else {
+                        return item 
+                    }
+                })
+            }
+        })
     }
 
-    const clearItem = () => {
-        dispatch({ type:"CLEAR_CART" });
+    const removeItems = (id) => {
+        setCartItems(items => {
+            return items.filter(item => item.id !== id)
+        })
     }
 
-    const getTotal = () => {
-        dispatch({ type: "GET_TOTAL" });
+    const clearCart = () => {
+        setCartItems([]);
     }
-
-    ////////////////////////////////////////////////////////////
 
     const baseUrl = "https://fakestoreapi.com/products";
 
+    // API call for 20 products
     const getData = async () => {
         setIsLoading(true);
 
@@ -76,12 +95,7 @@ export default function ProductContextProvider({ children }){
         }
     }
 
-    useEffect(() => {
-        getData();
-    }, [])
-
-    console.log(data);
-
+    // API call for single product details after you've clicked on the item
     const getSingleProductData = async (id) => {
         setIsLoading(true);
 
@@ -93,11 +107,11 @@ export default function ProductContextProvider({ children }){
             }
 
             let singleProductData = await response.json();
-            setSingleData(singleProductData);
+            setSingleProductData(singleProductData);
             setError(null);
         } catch (err) {
             setError(err.message);
-            setSingleData([]);
+            setSingleProductData([]);
         } finally {
             setIsLoading(false);
         }
@@ -106,24 +120,22 @@ export default function ProductContextProvider({ children }){
     return (
         <ProductContext.Provider 
             value={{ 
-                state, 
-                singleData,
-                getTotal,
-                removeItem,
-                clearItem, 
-                addItem, 
-                baseUrl, 
-                getData, 
-                data, 
-                searchTerm, 
-                setIsLoading, 
-                setSearchTerm, 
-                isLoading, 
-                error, 
-                setError, 
-                setCategories, 
+                getData,
+                getSingleProductData,
+                isLoading,
+                data,
+                error,
+                searchTerm,
+                setSearchTerm,
                 categories,
-                getSingleProductData
+                setCategories,
+                singleProductData,
+                checkQuantity,
+                increaseQuantity,
+                decreaseQuantity,
+                removeItems,
+                clearCart,
+                cartItems
         }}>
             {children}
         </ProductContext.Provider>

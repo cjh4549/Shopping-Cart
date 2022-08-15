@@ -15,9 +15,7 @@ export default function ProductList(){
         return <Loading />
     } 
     else if (error) {
-        return(
-            <Error />
-        )
+        return <Error />
     } else {
         return(
             <section>

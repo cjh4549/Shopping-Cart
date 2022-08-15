@@ -2,14 +2,12 @@ import { useProductContext } from '../context/ProductContextProvider';
 import CartItem from '../components/CartItem';
 
 export default function Cart(){
-    const { state: {cart, uniqueCart}, clearItem, quantity, getTotal } = useProductContext();
+    const { cartItems, clearCart, data } = useProductContext();
 
-    console.log(cart);
-
-    if (uniqueCart.length === 0) {
+    if (cartItems.length < 1) {
         return(
-            <section>
-                <h2>Your Cart</h2>
+            <section className="px-10 mt-5">
+                <h2 className="font-bold mb-2">Your Cart</h2>
                 <p>It's current empty!</p>
             </section>
         )
@@ -17,19 +15,17 @@ export default function Cart(){
         return(
             <section className="p-10">
                 <h2>Your Cart</h2>
-                <article>
-                {   uniqueCart?.length > 1 ?
-                    uniqueCart.map(item => <CartItem key={item.id} {...item} />)
-                    : null
-                }
-                    <div>
-                        <p>Number of Items: {quantity}</p>
-                        <p>Total Price: ${getTotal}</p>
-                    </div>
-                </article>
+                {cartItems.map(item => (
+                    <CartItem key={item.id} {...item} />
+                ))}
                 <footer>
-                    {/* <h4>Total: <span>${total}</span></h4> */}
-                    <button onClick={() => clearItem()}>Clear Cart</button>
+                    <button className="hover:underline" onClick={() => clearCart()}>Clear Cart</button>
+                    <div>
+                        <p>Total: {cartItems.reduce((acc, currentItem) => {
+                            const item = data.find(product => product.id == currentItem.id)
+                            return acc + (item?.price || 0) * currentItem.quantity
+                        }, 0)}</p>
+                    </div>
                 </footer>
             </section>
         )
