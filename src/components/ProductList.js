@@ -25,7 +25,7 @@ export default function ProductList(){
                         ?.filter(({ title }) => title.toLowerCase().split(' ').join('').includes(searchTerm.toLowerCase().split(' ').join('')))
                         .map(({ id, title, image, rating:{ rate }, price }) => (
                         <Link to={`/product/${id}`} key={id}>
-                            <article className="flex w-1/2 mx-auto mb-8 sm:flex-col sm:w-full">
+                            <article role="productList" className="flex w-1/2 mx-auto mb-8 sm:flex-col sm:w-full">
                                 <img className="w-24 object-cover" src={image} alt={title} />
                                 <div className="ml-24 flex flex-col justify-center sm:m-0">
                                     <h3 className="text-xl sm:text-base">{title}</h3>
