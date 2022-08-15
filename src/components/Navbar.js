@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useProductContext } from '../context/ProductContextProvider';
+import { useEffect } from 'react';
+import useResetProducts from '../hooks/useResetProduct';
 
 export default function Navbar({ darkTheme, setDarkTheme }){
     const { cartItems } = useProductContext();
@@ -9,7 +11,7 @@ export default function Navbar({ darkTheme, setDarkTheme }){
             <nav className="w-full">
                 <ul className="flex justify-between w-100 sm:flex-col">
                     <li className="w-5/6">
-                        <Link to="/">
+                        <Link to="/" onClick={useResetProducts}>
                             <span className="rounded-lg text-2xl bg-blue-500 font-bold text-white py-1.5 pt-1 px-2 dark:bg-gray-500 dark:text-gray-900">
                                 Awesome Buy
                             </span>

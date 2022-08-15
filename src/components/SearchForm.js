@@ -38,7 +38,7 @@ export default function SearchForm(){
             <label htmlFor="categories" className="font-bold">
                 Categories:
                 <select
-                    className="dark:text-black ml-1 p-1 font-normal"
+                    className="dark:text-black ml-1 p-1 font-normal bg-white"
                     id="categories"
                     name="category"
                     value={categories}

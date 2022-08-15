@@ -6,15 +6,13 @@ import { useProductContext } from '../context/ProductContextProvider';
 
 export default function SingleProduct(){
     const { id } = useParams();
-    const { isLoading, error, singleProductData, getSingleProductData, increaseQuantity, checkQuantity } = useProductContext();
+    const { isLoading, error, singleProductData, getSingleProductData, increaseQuantity } = useProductContext();
 
     useEffect(() => {
         getSingleProductData(id)
     }, [id]);
     
     const { description, image, price, title } = singleProductData;
-
-    const quantity = checkQuantity(id);
 
     if (isLoading) {
         return <Loading />

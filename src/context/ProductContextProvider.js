@@ -1,7 +1,5 @@
 import { useState, createContext, useContext, useEffect } from "react";
 
-const ProductContext = createContext(); 
-
 const getLocalStorage = () => {
     let cartItems = localStorage.getItem('cartItems');
     if(cartItems) {
@@ -11,36 +9,33 @@ const getLocalStorage = () => {
     }
 }
 
+const ProductContext = createContext(); 
+
 export default function ProductContextProvider({ children }){
     const [data, setData] = useState([]);
+    const [singleProductData, setSingleProductData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories] = useState('all');
-    const [singleProductData, setSingleProductData] = useState([]);
     const [cartItems, setCartItems] = useState(getLocalStorage());
 
-    //local storage
+    //Local storage
     useEffect(() => {
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
     }, [cartItems])
 
-    const checkQuantity = (id) => {
-        return cartItems.find(item => item.id === id)?.quantity || 0;
-    }
-
+    //Functions for cart actions
     const increaseQuantity = (id) => {
         setCartItems(items => {
-            //if the item is not in the list, add one --> adding the first item to the cart
             if (items.find(item => item.id === id) == null) {
                 return [...items, {id, quantity: 1}]
             } else {
-            //adding more items to the cart; map through each item in the list and only increment the one that matches with the id
                 return items.map(item => {
                     if (item.id === id) {
                         return {...item, quantity: item.quantity + 1}
                     } else {
-                        return item // because you don't want to do anything else to other item that doesn't match with the id
+                        return item 
                     }
                 })
             }
@@ -75,7 +70,7 @@ export default function ProductContextProvider({ children }){
 
     const baseUrl = "https://fakestoreapi.com/products";
 
-    // API call for 20 products
+    // API call for all 20 products
     const getData = async () => {
         setIsLoading(true);
 
@@ -144,7 +139,6 @@ export default function ProductContextProvider({ children }){
                 categories,
                 setCategories,
                 singleProductData,
-                checkQuantity,
                 increaseQuantity,
                 decreaseQuantity,
                 removeItems,

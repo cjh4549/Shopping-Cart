@@ -4,8 +4,6 @@ export default function CartItem({ id, quantity }) {
     const { removeItems, data, decreaseQuantity, increaseQuantity } = useProductContext();
     const item = data.find(product => product.id == id)
 
-    // const { title, image, price } = item;
-
     if (item == null) {
         return <h2>Nothing matched</h2>
     } else {

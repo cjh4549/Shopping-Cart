@@ -20,7 +20,7 @@ export default function Cart(){
                 ))}
                 <footer>
                     <div>
-                        <p>Total: {cartItems.reduce((acc, currentItem) => {
+                        <p>Total: ${cartItems.reduce((acc, currentItem) => {
                             const item = data.find(product => product.id == currentItem.id);
                             return acc + (item?.price || 0) * currentItem.quantity;
                         }, 0)}</p>
