@@ -7,7 +7,7 @@ export default function Error(){
     return(
         <section>
             <Link to="/">
-                <h2>{error}</h2>
+                <h2 className="px-10 text-center mt-20 font-bold hover:underline">{error}...</h2>
             </Link>
         </section>
     )

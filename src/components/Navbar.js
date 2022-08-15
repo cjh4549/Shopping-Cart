@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useProductContext } from '../context/ProductContextProvider';
 
 export default function Navbar({ darkTheme, setDarkTheme }){
+    const { state } = useProductContext();
+
     return(
-        <header className="p-5 flex flex-wrap justify-center items-center border-b-2 sm:justify-between dark:border-gray-700 border-gray-200">
+        <header className="px-10 py-5 flex flex-wrap justify-center items-center border-b-2 sm:justify-between dark:border-gray-700 border-gray-200">
             <nav className="w-full">
                 <ul className="flex justify-between w-100">
                     <li className="w-5/6">
@@ -21,7 +24,7 @@ export default function Navbar({ darkTheme, setDarkTheme }){
                         <li>
                             <Link to="/cart" className="flex items-center">
                                 <span className="rounded-lg text-xl font-bold text-black hover:shadow-lg py-1 px-2 dark:text-gray-300">
-                                    Cart({0})
+                                    Cart({})
                                 </span>
                             </Link>
                         </li>

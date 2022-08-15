@@ -6,12 +6,10 @@ import ProductContextProvider from './context/ProductContextProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <ProductContextProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </ProductContextProvider>
-  </React.StrictMode>
 );
 

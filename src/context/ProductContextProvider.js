@@ -1,13 +1,7 @@
 import { useState, useEffect, createContext, useContext, useReducer } from "react";
 import reducer from './reducer';
 
-const ProductContext = createContext();
-
-const initialState = {
-    total: 0,
-    amount: 0,
-    cart: []
-}
+const ProductContext = createContext(); 
 
 export default function ProductContextProvider({ children }){
     const [data, setData] = useState([]);
@@ -15,21 +9,37 @@ export default function ProductContextProvider({ children }){
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [categories, setCategories] = useState('all');
+    const [singleData, setSingleData] = useState([]);
 
-    //useReducer
+    //useReducer/////////////////////////////////////////////
     
-    const [state, dispatch] = useReducer(reducer, initialState); 
+    const [state, dispatch] = useReducer(reducer, {
+        total: 0,
+        quantity: 0,
+        cart: [data]
+    }); 
 
-    const addItem = (singleProduct) => {
-        dispatch({ type: "ADD", payload: singleProduct });
-        console.log(state)
+    const addCart = (data) => {
+        dispatch({ type: "ADD_CART", payload: data })
+    }
+
+    const addItem = (singleData, id) => {
+        dispatch({ type: "ADD_ITEM", payload: id});
+    }
+
+    const removeItem = (id) => {
+        dispatch({ type: "REMOVE_ITEM", payload: id });
     }
 
     const clearItem = () => {
-        dispatch({ type:"CLEAR" });
+        dispatch({ type:"CLEAR_CART" });
     }
 
-    //
+    const getTotal = () => {
+        dispatch({ type: "GET_TOTAL" });
+    }
+
+    ////////////////////////////////////////////////////////////
 
     const baseUrl = "https://fakestoreapi.com/products";
 
@@ -68,12 +78,38 @@ export default function ProductContextProvider({ children }){
 
     useEffect(() => {
         getData();
-    }, [searchTerm, categories]);
+    }, [])
+
+    console.log(data);
+
+    const getSingleProductData = async (id) => {
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(`${baseUrl}/${id}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP Request Error: the status is ${response.status}`);
+            }
+
+            let singleProductData = await response.json();
+            setSingleData(singleProductData);
+            setError(null);
+        } catch (err) {
+            setError(err.message);
+            setSingleData([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     return (
         <ProductContext.Provider 
             value={{ 
                 state, 
+                singleData,
+                getTotal,
+                removeItem,
                 clearItem, 
                 addItem, 
                 baseUrl, 
@@ -86,7 +122,8 @@ export default function ProductContextProvider({ children }){
                 error, 
                 setError, 
                 setCategories, 
-                categories 
+                categories,
+                getSingleProductData
         }}>
             {children}
         </ProductContext.Provider>

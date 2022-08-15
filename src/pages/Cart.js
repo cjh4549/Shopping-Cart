@@ -2,9 +2,11 @@ import { useProductContext } from '../context/ProductContextProvider';
 import CartItem from '../components/CartItem';
 
 export default function Cart(){
-    const { state, clearItem } = useProductContext();
+    const { state: {cart, uniqueCart}, clearItem, quantity, getTotal } = useProductContext();
 
-    if (state.cart.length === 0) {
+    console.log(cart);
+
+    if (uniqueCart.length === 0) {
         return(
             <section>
                 <h2>Your Cart</h2>
@@ -13,17 +15,20 @@ export default function Cart(){
         )
     } else {
         return(
-            <section>
+            <section className="p-10">
                 <h2>Your Cart</h2>
                 <article>
-                {   state.cart.length > 1 ?
-                    state.cart.map(item => <CartItem key={item.id} {...item} />)
+                {   uniqueCart?.length > 1 ?
+                    uniqueCart.map(item => <CartItem key={item.id} {...item} />)
                     : null
                 }
-                    CART ITEM{state.cart.length}
+                    <div>
+                        <p>Number of Items: {quantity}</p>
+                        <p>Total Price: ${getTotal}</p>
+                    </div>
                 </article>
                 <footer>
-                    <h4>Total: <span>$</span></h4>
+                    {/* <h4>Total: <span>${total}</span></h4> */}
                     <button onClick={() => clearItem()}>Clear Cart</button>
                 </footer>
             </section>
